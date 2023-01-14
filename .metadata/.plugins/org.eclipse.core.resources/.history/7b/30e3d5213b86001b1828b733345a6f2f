@@ -1,0 +1,5 @@
+package com.mindtree.franchise.exception;
+
+public class ErrorDetails {
+
+}

@@ -1,0 +1,30 @@
+package com.mindtree.insuranceCompanyApp;
+
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.mindtree.insuranceCompanyApp.dto.CompanyDto;
+import com.mindtree.insuranceCompanyApp.entity.Company;
+import com.mindtree.insuranceCompanyApp.service.CompanyService;
+
+@DataJpaTest
+public class InsuranceServiceTest {
+
+	@Autowired
+	CompanyService companyService;
+
+	@Test
+	public void testGetAllCompanies() {
+		
+		List<CompanyDto> cList = companyService.getAllCompanies();	
+		
+		Assert.assertNotNull(c);
+		
+	}
+
+}

@@ -1,0 +1,5 @@
+package com.mindtree.franchise.service;
+
+public interface TeamService {
+
+}

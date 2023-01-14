@@ -1,0 +1,9 @@
+package com.mindtree.student.dto;
+
+public class StudentDto {
+
+	private int id;
+	private String name;
+	Set<String> teacherNames;
+	
+}

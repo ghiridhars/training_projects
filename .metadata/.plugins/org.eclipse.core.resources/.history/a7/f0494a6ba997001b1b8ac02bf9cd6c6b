@@ -1,0 +1,7 @@
+package com.vskreddy652.rest.service;
+
+public interface Service {
+	
+	
+
+}

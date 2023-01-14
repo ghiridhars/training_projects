@@ -1,0 +1,14 @@
+@charset "ISO-8859-1";
+
+body {
+	background-size: contain;
+	background: url(../images/welcome.jpg);
+	min-height: 600px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed;
+}
+
+form div{
+	padding: 10px;
+}

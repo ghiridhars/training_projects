@@ -1,0 +1,5 @@
+package com.mindtree.franchise.entity;
+
+public class Player {
+
+}

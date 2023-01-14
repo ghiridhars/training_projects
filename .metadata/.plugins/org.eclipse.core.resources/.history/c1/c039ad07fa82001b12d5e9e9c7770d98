@@ -1,0 +1,19 @@
+@charset "ISO-8859-1";
+
+.parallax {
+	background-size: cover;
+	background: url(../images/welcome.jpg);
+	min-height: 600px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed;
+}
+
+body {
+	background: linear-gradient(olive, white);
+	background-repeat: no-repeat;
+}
+
+form div {
+	padding: 10px;
+}

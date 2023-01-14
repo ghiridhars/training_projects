@@ -1,0 +1,84 @@
+package com.mindtree.franchise.entity;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+public class Team {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int teamId;
+	private String teamName;
+	private byte limit;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdDate = new Date();
+
+	@OneToMany(mappedBy = "team")
+	private List<Player> players;
+
+	public Team(int teamId, String teamName, byte limit, Date createdDate, List<Player> players) {
+		super();
+		this.teamId = teamId;
+		this.teamName = teamName;
+		this.limit = limit;
+		this.createdDate = createdDate;
+		this.players = players;
+	}
+
+	public Team() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public List<Player> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(List<Player> players) {
+		this.players = players;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public byte getLimit() {
+		return limit;
+	}
+
+	public void setLimit(byte limit) {
+		this.limit = limit;
+	}
+
+	public int getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(int teamId) {
+		this.teamId = teamId;
+	}
+
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
+	}
+
+}

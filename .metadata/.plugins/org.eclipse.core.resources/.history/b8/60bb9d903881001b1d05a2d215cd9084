@@ -1,0 +1,27 @@
+$(document).ready(function(){
+	$("#studentForm").validate({
+		rules:{
+			name:{
+				required:true,
+				minlength:5
+			},
+			gender:{
+				required:true
+			},
+			
+		},
+		messages:{
+			name:{
+				required:'Please enter name',
+				minlength:'Please enter name with 5 characters'
+			},
+			gender:{
+				required:'Please enter gender'
+			},
+		},
+		submitHandler:function(form){
+			form.submit();
+			return true;
+		}
+	});
+});

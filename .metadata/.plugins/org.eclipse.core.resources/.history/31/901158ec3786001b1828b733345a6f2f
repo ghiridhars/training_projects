@@ -1,0 +1,14 @@
+package com.mindtree.franchise.service;
+
+import java.util.List;
+
+import com.mindtree.franchise.dto.PlayerDto;
+import com.mindtree.franchise.exception.FranchiseServiceException;
+
+public interface PlayerService {
+	
+	public List<PlayerDto> getAllPlayers()throws FranchiseServiceException;
+	
+	
+
+}

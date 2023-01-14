@@ -1,0 +1,45 @@
+package com.mindtree.franchise.dto;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+public class Team {
+
+	private int id;
+	private String name;
+	private byte limit;
+
+	public byte getLimit() {
+		return limit;
+	}
+
+	public void setLimit(byte limit) {
+		this.limit = limit;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+}

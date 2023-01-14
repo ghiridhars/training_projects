@@ -1,0 +1,24 @@
+package junitPractise;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import junitPractise.model.Address;
+
+public class Service {
+
+	private Address add;
+
+	public Service(Address add) {
+		this.add = add;
+	}
+
+	public int getStuffWithLengthLessThanFive() {
+		try {
+			return add.getAddress().length();
+		} catch (SQLException e) {
+			return 0;
+		}
+	}
+
+}

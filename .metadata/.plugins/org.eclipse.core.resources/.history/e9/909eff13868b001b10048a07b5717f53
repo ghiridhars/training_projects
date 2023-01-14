@@ -1,0 +1,65 @@
+package com.mindtree.insuranceCompanyApp.exception;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolationException;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+@RestController
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+//	@ExceptionHandler(InsuranceAppException.class)
+//	public ResponseEntity<?> handleInsuranceAppException(InsuranceAppException e, WebRequest wr) {
+//		ErrorDetails er = new ErrorDetails(e.getMessage(), new Date(), wr.getDescription(false));
+//		return new ResponseEntity<ErrorDetails>(er, HttpStatus.BAD_REQUEST);
+//	}
+
+	@ResponseStatus(code = HttpStatus.BAD_GATEWAY)
+	@ExceptionHandler(ConstraintViolationException.class)
+	public ResponseEntity<Object> handleMethodArgumentNotValid(ConstraintViolationException ex,HttpHeaders headers,HttpStatus status){
+		
+		Map<String, Object> body = new HashMap<>();
+		
+		body.put("timestamp", new Date());
+		body.put("status",status);
+		
+		String errors = ex.getMessage();
+		
+		body.put("errors", errors);
+		
+		return new ResponseEntity<>(body,headers,status);
+	}
+
+//	@ExceptionHandler(MethodArgumentNotValidException.class)
+//	public ResponseEntity<?> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+//		Map<String, String> errors = new HashMap<>();
+//
+//		ErrorDetails er = new ErrorDetails(ex.getMessage(), new Date(),"");
+//
+//		ex.getBindingResult().getAllErrors().forEach((error) -> {
+//			String fieldName = ((FieldError) error).getField();
+//			String errorMessage = error.getDefaultMessage();
+//			errors.put(fieldName, errorMessage);
+//		});
+//		return new ResponseEntity<>(er, HttpStatus.BAD_REQUEST);
+//	}
+
+}

@@ -1,0 +1,12 @@
+package com.mindtree.student.exception;
+
+import com.mindtree.student.StudentApplication;
+
+public class StudentException extends StudentAppException{
+
+	public StudentException() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+}

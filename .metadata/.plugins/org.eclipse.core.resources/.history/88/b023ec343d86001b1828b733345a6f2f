@@ -1,0 +1,7 @@
+package com.mindtree.franchise.service.serviceImpl;
+
+import com.mindtree.franchise.service.TeamService;
+
+public class TeamServiceImpl implements TeamService{
+
+}

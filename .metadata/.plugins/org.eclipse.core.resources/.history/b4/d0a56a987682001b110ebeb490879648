@@ -1,0 +1,25 @@
+@charset "ISO-8859-1";
+
+.parallax {
+	background-size: contain;
+	background: url(../images/welcome.jpg);
+	min-height: 900px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed;
+}
+
+@media only screen and (max-width :768px) {
+	.parallax {
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: top;
+		background-attachment: fixed;
+		background: url(../images/img.jpg);
+		width: 100%;
+	}
+	.myCanvas {
+		font-family: fantasy;
+		color:orange;
+	}
+}

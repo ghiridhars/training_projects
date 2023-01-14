@@ -1,0 +1,54 @@
+package com.mindtree.personPassport.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Student;
+import com.example.demo.entity.StudentDetails;
+import com.mindtree.personPassport.entity.Passport;
+import com.mindtree.personPassport.entity.Person;
+import com.mindtree.personPassport.repository.PassportRepo;
+import com.mindtree.personPassport.repository.PersonRepo;
+
+@Service
+public class PassportService {
+	
+	@Autowired
+	private PassportRepo passportRepo;
+	
+	@Autowired
+	private PersonRepo personRepo;
+
+	List<Passport> passportList = new ArrayList<>();
+
+	public List<Passport> getAllDetails() {
+		List<Passport> li= new ArrayList<>();
+		passportRepo.findAll()
+		.forEach(li::add);
+		return li;
+	}
+	
+	public Passport getPassportById(int id) {
+		passportList=getAllDetails();
+		return passportList.stream().filter(x -> x.getPassportId()== id).findFirst().get();
+	}
+	
+	public Passport addPassport(Passport s,int personId){
+		Person per= personRepo.findById(personId).orElse(null);
+		Passport pass= null;
+		if(per== null) {
+//			throw new InvalidStudentException("Student with id:"+studentId+"not found");
+		}
+		else {
+			pass.setPerson(per);
+			pass = passportRepo.save(pass);
+			per.setPassport(pass);
+			per = personRepo.save(per);
+		}
+		System.out.println("Added Details");
+		return pass;
+	}
+}

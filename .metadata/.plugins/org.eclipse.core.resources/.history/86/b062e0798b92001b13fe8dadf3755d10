@@ -1,0 +1,136 @@
+package com.mindtree.insuranceCompanyApp.service.serviceImpl;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
+
+import com.mindtree.insuranceCompanyApp.dto.CompanyDto;
+import com.mindtree.insuranceCompanyApp.entity.Company;
+import com.mindtree.insuranceCompanyApp.exception.CompanyServiceException;
+import com.mindtree.insuranceCompanyApp.exception.InvalidCompanyException;
+import com.mindtree.insuranceCompanyApp.repository.CompanyRepository;
+import com.mindtree.insuranceCompanyApp.service.CompanyService;
+
+@Service
+public class CompanyServiceImplementation implements CompanyService {
+
+	@Autowired
+	private CompanyRepository companyRepo;
+
+	private static ModelMapper mapper = new ModelMapper();
+	
+	private static SerializeObject so = new SerializeObject();
+
+	
+	SerializeObject s = new SerializeObject();
+
+	public Company dtoToEntity(CompanyDto cDto) {
+		return mapper.map(cDto, Company.class);
+	}
+
+	public CompanyDto entityToDto(Company c) {
+		return mapper.map(c, CompanyDto.class);
+	}
+
+	public List<Company> dtoToEntity(List<CompanyDto> cDto) {
+		return cDto.stream().map(x -> dtoToEntity(x)).collect(Collectors.toList());
+	}
+
+	public List<CompanyDto> entityToDto(List<Company> c) {
+		return c.stream().map(x -> entityToDto(x)).collect(Collectors.toList());
+	}
+	
+//	public List<CompanyDto> entityToDto(List<Company> c) {
+//		return c.stream().map(x -> entityToDto(x)).collect(Collectors.toList());
+//	}	
+
+	@Override
+	@Cacheable(value="cList")
+//	@CacheEvict(value="cList",allEntries = true)
+	public List<CompanyDto> getAllCompanies() throws CompanyServiceException {
+		List<Company> cList = null;
+		try {
+			Thread.sleep(1000);
+			cList = companyRepo.findAll();
+			so.serialize(entityToDto(cList));
+			so.deserialize();
+		} catch (DataAccessException e) {
+			throw new CompanyServiceException(e.getMessage(),e);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return entityToDto(cList);
+	}
+
+	@Override
+	@Cacheable(value="companies")
+	public CompanyDto addCompany(CompanyDto cDto) throws CompanyServiceException {
+		Company c = dtoToEntity(cDto);
+		try {
+			Company dupe = companyRepo.findByName(c.getName()).orElse(null);
+			if (dupe == null)
+				companyRepo.save(c);
+			else
+				throw new InvalidCompanyException("Company with name already exists");
+		} catch (DataAccessException e) {
+			throw new CompanyServiceException(e.getMessage(),e);
+		}
+		return entityToDto(c);
+	}
+
+	@Override
+	@CachePut(value="companies")
+	public CompanyDto updateCompanyById(CompanyDto cDto,int id) throws CompanyServiceException {
+		Company c = dtoToEntity(cDto);
+		try {
+			Company dupe = companyRepo.findById(id).orElseThrow(() -> new InvalidCompanyException("Company doesnt exist"));
+			dupe.setName(cDto.getName());
+			
+			companyRepo.save(dupe);
+		} catch (DataAccessException e) {
+			throw new CompanyServiceException(e.getMessage(),e);
+		}
+		return entityToDto(c);
+	}
+
+	@Override
+	@Cacheable(value="cList")
+	@CacheEvict(value="cList",allEntries = true)
+	public Company[] getSortedCompanies() throws CompanyServiceException {
+		List<Company> cList = null;
+		try {
+			cList = dtoToEntity(getAllCompanies());
+//			cList = cList.stream().filter(x -> x.getPolicies().size() >= 3).collect(Collectors.toList());
+			cList.sort(new CompanyComparator());
+		} catch (DataAccessException e) {
+			throw new CompanyServiceException(e.getMessage(),e);
+		}
+		Iterator<Company> itr = cList.iterator();
+		Company cL[] =new Company[cList.size()];
+		int i = 0;
+		while(itr.hasNext()) {
+			cL[i] = itr.next();
+		}
+		return cL;
+	}
+
+	@Override
+	public CompanyDto getCompany(int id) throws CompanyServiceException {
+		Company c= null;
+		try {
+			c = companyRepo.findById(id).orElseThrow(() -> new InvalidCompanyException("Company Not Found"));
+		} catch (DataAccessException e) {
+			throw new CompanyServiceException(e.getMessage(),e);
+		} 
+		return entityToDto(c);
+	}
+}

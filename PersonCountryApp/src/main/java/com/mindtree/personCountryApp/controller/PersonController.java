@@ -1,0 +1,141 @@
+package com.mindtree.personCountryApp.controller;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.Gson;
+import com.mindtree.personCountryApp.dto.PersonDto;
+import com.mindtree.personCountryApp.dto.StateDto;
+import com.mindtree.personCountryApp.exception.ApplicationServiceException;
+import com.mindtree.personCountryApp.exception.InvalidStateException;
+import com.mindtree.personCountryApp.service.CountryService;
+import com.mindtree.personCountryApp.service.StateService;
+import com.mindtree.personCountryApp.service.PersonService;
+
+@Controller
+@RequestMapping("/person")
+public class PersonController {
+
+	@Autowired
+	private StateService stateService;
+
+	@Autowired
+	private PersonService personService;
+
+	@Autowired
+	private CountryService countryService;
+
+	@RequestMapping(method = RequestMethod.GET, value = "/addPerson")
+	public String addState(Model m) {
+		try {
+			m.addAttribute("countryList", countryService.getAllDetails());
+			return "addPerson";
+		} catch (ApplicationServiceException e) {
+			e.printStackTrace();
+			m.addAttribute("errors", e.getMessage());
+			return "errors";
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/showPerson")
+	public String showPerson(@Valid @ModelAttribute("State") PersonDto pDto, BindingResult br, Model m) {
+
+		System.out.println(pDto);
+		
+		try {
+			if (!br.hasErrors()) {
+				
+				PersonDto per = personService.addPersonByName(pDto, pDto.getStateName());
+				System.out.println(pDto);
+				return "redirect:getAllData";
+
+			} else {
+				m.addAttribute("errors", br.getAllErrors());
+				return "errors";
+			}
+		} catch (ApplicationServiceException e) {
+			m.addAttribute("errors", e.getMessage());
+			return "errors";
+		}
+	}
+
+//	@RequestMapping(method = RequestMethod.GET, value = "/editPerson/{stateId}")
+//	public String editPerson(@PathVariable("stateId") String personId, Model m) {
+//		StateDto s;
+//		try {
+//			s = personService.getPersonByName(personId);
+//			System.out.println(s);
+//			m.addAttribute("CountryList", countryService.getAllDetails());
+//			m.addAttribute("State", s);
+//			return "editState";
+//		} catch (ApplicationServiceException e) {
+//			e.printStackTrace();
+//			m.addAttribute("errors", e.getMessage());
+//			return "errors";
+//		}
+//	}
+
+	@ResponseBody
+	@RequestMapping(value = "/getStatesByCountry/{name}", method = RequestMethod.GET)
+	public List<String> getStatesByCountry(@PathVariable String name, Model m) {
+		System.out.println("Getting all States");
+		List<String> stateNames = null;
+		try {
+			System.out.println(stateService.getStatesByName(name));
+			List<StateDto> li = stateService.getStatesByName(name);
+			stateNames = li.stream().map(x -> x.getStateName()).collect(Collectors.toList());
+			return (stateNames);
+		} catch (ApplicationServiceException e) {
+			m.addAttribute("errors", e.getMessage());
+			return stateNames;
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/getPersonsByState/{name}", method = RequestMethod.GET)
+	public List<PersonDto> getPersonsByState(@PathVariable String name, Model m) {
+		System.out.println("Getting all States");
+		List<PersonDto> li = null;
+		try {
+			System.out.println(personService.getPersonsByState(name));
+			 li = personService.getPersonsByState(name);
+			return (li);
+		} catch (ApplicationServiceException e) {
+			m.addAttribute("errors", e.getMessage());
+			return li;
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/getAllData")
+	public String getAllStates(Model m) {
+		System.out.println("Getting all States");
+		try {
+			m.addAttribute("countryList", countryService.getAllDetails());
+			return "getData";
+
+		} catch (ApplicationServiceException e) {
+			e.printStackTrace();
+			m.addAttribute("errors", e.getMessage());
+			return "errors";
+		}
+	}
+
+}

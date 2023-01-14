@@ -1,0 +1,24 @@
+@charset "ISO-8859-1";
+
+nav{
+	background: linear-gradient(lightblue,white);
+}
+
+li{
+	display: inline-block;
+}
+
+li div {
+	display: none;
+	position: absolute;
+	left:0;
+	width:100%;
+}
+
+a {
+	display: block;'
+}
+
+li:hover div{
+	display: inline-block;
+}

@@ -1,0 +1,9 @@
+@charset "ISO-8859-1";
+
+nav{
+	background: linear-gradient(lightblue,white);
+}
+
+li{
+	display: inline-block;l
+}

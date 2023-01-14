@@ -1,0 +1,71 @@
+package com.mindtree.CollegeApp.dto;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+public class CollegeDto {
+
+	@NotNull(message = "ID should not be empty")
+	private int collegeId;
+	
+	@NotBlank(message = "Name should not be empty")
+	private String collegeName;
+
+	@NotNull(message = "Strength should not be empty")
+	@Min(message = "Strength should be atleast 100", value = 100)
+	@Max(message = "Strength should be atmost 1000", value = 1000)
+	private short strength;
+
+	public CollegeDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public CollegeDto(int collegeId, String collegeName, short strength) {
+		super();
+		this.collegeId = collegeId;
+		this.collegeName = collegeName;
+		this.strength = strength;
+	}
+
+	public String getCollegeName() {
+		return collegeName;
+	}
+
+	public void setCollegeName(String collegeName) {
+		this.collegeName = collegeName;
+	}
+
+	public short getStrength() {
+		return strength;
+	}
+
+	public void setStrength(short strength) {
+		this.strength = strength;
+	}
+
+	public int getCollegeId() {
+		return collegeId;
+	}
+
+	public void setCollegeId(int collegeId) {
+		this.collegeId = collegeId;
+	}
+
+	@Override
+	public String toString() {
+		return "CollegeDto [collegeId=" + collegeId + ", collegeName=" + collegeName + ", strength=" + strength + "]";
+	}
+	
+}

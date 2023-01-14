@@ -1,0 +1,82 @@
+package com.mindtree.insuranceCompanyApp.controller;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mindtree.insuranceCompanyApp.dto.CompanyDto;
+import com.mindtree.insuranceCompanyApp.dto.PolicyDto;
+import com.mindtree.insuranceCompanyApp.exception.CompanyServiceException;
+import com.mindtree.insuranceCompanyApp.exception.InsuranceAppException;
+import com.mindtree.insuranceCompanyApp.exception.PolicyServiceException;
+import com.mindtree.insuranceCompanyApp.service.PolicyService;
+
+@RestController
+@RequestMapping("/policy")
+public class PolicyController {
+
+	@Autowired
+	private PolicyService policyService;
+
+	@PostMapping("/addPolicy/{name}")
+	public ResponseEntity<?> addPolicy(@RequestBody PolicyDto pDto,
+			@PathVariable String name,
+			@RequestHeader(value="Accept-language") String acceptVal,
+			@RequestHeader(value="Cache-Control") String cc,
+			@RequestHeader(value="Content-Type") String ct,
+			@RequestHeader(value="Content-Length") String cl,
+			@RequestHeader(value="From") String f
+			) throws InsuranceAppException {
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.add(HttpHeaders.CACHE_CONTROL, cc);
+			headers.add(HttpHeaders.ACCEPT_LANGUAGE, acceptVal);
+			headers.add(HttpHeaders.CONTENT_TYPE, ct);
+			headers.add(HttpHeaders.CONTENT_LENGTH, cl);
+			headers.add(HttpHeaders.FROM, f);
+
+			PolicyDto p=policyService.addPolicyByName(pDto, name);
+			return ResponseEntity.ok().headers(headers).body(p);
+		} catch (PolicyServiceException e) {
+			e.printStackTrace();
+			throw new InsuranceAppException(e.getMessage(),e);
+		}
+	}
+
+	@RequestMapping("/getPolicy/{id}")
+	public ResponseEntity<?> getPolicy(@PathVariable int id) throws InsuranceAppException {
+		try {
+			PolicyDto c= policyService.getPolicy(id);
+			return new ResponseEntity<>(c,HttpStatus.ACCEPTED);
+		} catch (PolicyServiceException e) {
+			e.printStackTrace();
+			throw new InsuranceAppException(e.getMessage(), e);
+		}
+	}
+	
+	@RequestMapping("/getAllPolicies")
+	public ResponseEntity<?> getAllPolicies() throws InsuranceAppException {
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			List<PolicyDto> cList = policyService.getAllPolicies();
+			return new ResponseEntity<>(cList,HttpStatus.ACCEPTED);
+		} catch (PolicyServiceException e) {
+			e.printStackTrace();
+			throw new InsuranceAppException(e.getMessage(),e);
+		}
+
+	}
+
+
+}

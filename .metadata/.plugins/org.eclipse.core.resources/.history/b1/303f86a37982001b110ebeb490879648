@@ -1,0 +1,72 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+	
+</script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<!-- jQuery library -->
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+
+</head>
+<body>
+
+	<jsp:include page="header.jsp" />
+
+	<div class="container">
+
+		<form:form name="editForm" id="editForm" method="post"
+			action="/student/updateStudent" modelAttribute="student">
+			<div>
+				<form:hiddenid="name" path="id"
+					value="${student.id}"></form:hidden>
+			</div>
+
+			<div>
+				<label for="name">Student Name:</label>
+				<form:input type="text" class="form-control" id="name"
+					value="${student.name}" path="name"></form:input>
+			</div>
+
+			<div>
+
+				<form:hidden class="form-check-input" id="gender" path="gender"
+					value="${student.gender}"></form:hidden>
+
+			</div>
+
+			<div>
+				<form:hidden class="form-check-input" id="subjects" path="subjects"
+					value="${subjects}"></form:hidden>
+			</div>
+
+			<div>
+				<label for="className">Class Name:</label>
+				<form:input type="text" class="form-control" id="className"
+					name="className" path="className" value="${student.className}"></form:input>
+			</div>
+			<div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+
+
+
+		</form:form>
+	</div>
+</html>

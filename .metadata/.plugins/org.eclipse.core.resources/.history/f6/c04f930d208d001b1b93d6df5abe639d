@@ -1,0 +1,20 @@
+package com.mindtree.insuranceCompanyApp;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.mindtree.insuranceCompanyApp.service.CompanyService;
+
+@DataJpaTest
+public class InsuranceServiceTest {
+
+	@Autowired
+	CompanyService companyService;
+
+	@Test
+	public void testGetAllCompanies() {
+	}
+
+}

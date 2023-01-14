@@ -1,0 +1,123 @@
+package com.mindtree.CollegeApp.service;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.mindtree.CollegeApp.dto.CollegeDto;
+import com.mindtree.CollegeApp.dto.StudentDto;
+import com.mindtree.CollegeApp.entity.College;
+import com.mindtree.CollegeApp.entity.Student;
+import com.mindtree.CollegeApp.exception.InvalidStudentException;
+import com.mindtree.CollegeApp.repository.CollegeRepo;
+import com.mindtree.CollegeApp.repository.StudentRepo;
+
+@Service
+public class StudentServiceImpl {
+	
+	@Autowired
+	private StudentRepo studentRepo;
+	
+	@Autowired
+	private CollegeRepo collegeRepo;
+
+	ModelMapper model = new ModelMapper();
+	
+	public CollegeDto entityToDto(College e) {
+		ModelMapper mapper = new ModelMapper();
+		CollegeDto map = mapper.map(e, CollegeDto.class);
+		return map;
+	}
+	
+	public StudentDto entityToDto(Student e) {
+		ModelMapper mapper = new ModelMapper();
+		StudentDto map = mapper.map(e, StudentDto.class);
+		return map;
+	}
+
+	public List<StudentDto> entityToDTo(List<Student> stu) {
+		return stu.stream().map(x -> entityToDto(x)).collect(Collectors.toList());
+	}
+
+	public College dtoToEntity(CollegeDto edto) {
+		College emp = new College();
+		ModelMapper mapper = new ModelMapper();
+		College map = mapper.map(edto, College.class);
+		return map;
+	}
+	
+	public Student dtoToEntity(StudentDto edto) {
+		Student emp = new Student();
+		ModelMapper mapper = new ModelMapper();
+		Student map = mapper.map(edto, Student.class);
+		return map;
+	}
+
+	public List<College> dtoToEntity(List<CollegeDto> dto) {
+		return dto.stream().map(x -> dtoToEntity(x)).collect(Collectors.toList());
+	}
+
+	public List<CollegeDto> entityToDto(List<College> emp) {
+		return emp.stream().map(x -> entityToDto(x)).collect(Collectors.toList());
+	}
+
+	List<Student> studentList = new ArrayList<>();
+
+	public List<StudentDto> getAllStudents() {
+		List<Student> li= new ArrayList<>();
+		studentRepo.findAll().forEach(li::add);
+		System.out.println(entityToDTo(li));
+		return entityToDTo(li);
+	}	
+	
+	public StudentDto getStudentById(int id) throws InvalidStudentException {
+		Student result = studentRepo.findById(id).orElse(null);
+//		College c = collegeRepo.findById(result.getStudentId()).orElse(null);
+		if(result == null)
+			throw new InvalidStudentException("Student ID not found");
+		else
+			return entityToDto(result);
+	}
+	
+	public boolean save(StudentDto s) {
+		studentRepo.save(dtoToEntity(s));
+		return true;
+	}
+	
+	public StudentDto addStudentById(StudentDto s,int id) throws InvalidStudentException{
+		List<Student> stuList = studentRepo.findAll();
+		College per= collegeRepo.findById(id).orElse(null);
+		Student pass= null;
+		int currentCount=0,max = 0;
+		currentCount = studentRepo.getCountStudent();
+		max = per.getStrength();
+		
+		if(per== null) {
+			throw new InvalidStudentException("College with id:"+id+"not found");
+		}
+		else if(currentCount == max) {
+			throw new InvalidStudentException("Limit Reached for College");
+		}
+		else {
+			Set<Student> li = new HashSet<>();
+			pass = studentRepo.save(dtoToEntity(s));
+			per.setStudents(li);
+			pass.setCollege(per);
+			per = collegeRepo.save(per);
+		}
+		System.out.println("Added Details");
+		return entityToDto(pass);
+	}
+
+	public List<StudentDto> getStudentsById(int studentId) {
+		List<Student> stuList = studentRepo.getStudentsById(studentId);
+		return entityToDTo(stuList);
+	}
+}

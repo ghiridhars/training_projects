@@ -1,0 +1,96 @@
+package com.mindtree.CollegeApp.dto;
+
+import java.util.Date;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mindtree.CollegeApp.entity.College;
+
+public class StudentDto {
+
+	@NotNull(message = "ID should not be empty")
+	private int studentId;
+	
+	@NotBlank(message = "Name should not be empty")
+	private String name;
+	
+	@NotBlank(message = "Subject Name should not be empty")
+	private String subject;
+	
+	@NotNull(message = "Age should not be empty")
+	private int age;
+	private int collegeId;
+	
+	private College college;
+
+	public StudentDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public StudentDto(int studentId, String name, String subject, int age, int collegeId) {
+		super();
+		this.studentId = studentId;
+		this.name = name;
+		this.subject = subject;
+		this.age = age;
+		this.collegeId = collegeId;
+	}
+
+	public int getCollegeId() {
+		return collegeId;
+	}
+
+	public void setCollegeId(int collegeId) {
+		this.collegeId = collegeId;
+	}
+
+	public int getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(int studentId) {
+		this.studentId = studentId;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	@Override
+	public String toString() {
+		return "StudentDto [studentId=" + studentId + ", name=" + name + ", subject=" + subject + ", age=" + age
+				+ ", collegeId=" + collegeId + "]";
+	}
+
+	public College getCollege() {
+		return college;
+	}
+
+	public void setCollege(College college) {
+		this.college = college;
+	}
+}

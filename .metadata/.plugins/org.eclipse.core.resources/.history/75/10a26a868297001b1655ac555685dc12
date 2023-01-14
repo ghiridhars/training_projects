@@ -1,0 +1,53 @@
+package com.mindtree.mavenHibernate;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.*;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+/**
+ * Hello world!
+ *
+ */
+public class App {
+	static SessionFactory sf = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+	
+	public static void main(String[] args) {
+
+		Session session =null;
+		try {
+
+			Address add1 = new Address();
+			add1.setCityName("Tvm");
+			add1.setPinCode(12787);
+			add1.setResidenceName("Home");
+
+			User u = new User();
+			u.setName("Hari");
+			u.setAddress(add1);
+
+			session = sf.openSession();
+			session.beginTransaction();
+			session.save(u);
+			session.save(add1);
+			session.getTransaction().commit();
+			session.close();
+
+			User res = null;
+
+			session = sf.openSession();
+			session.beginTransaction();
+			res = (User) session.get(User.class, 4);
+
+			System.out.println(res);
+
+		} finally {
+
+			session.close();
+		}
+	}
+}

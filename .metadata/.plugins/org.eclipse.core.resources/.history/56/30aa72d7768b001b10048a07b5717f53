@@ -1,0 +1,76 @@
+package com.mindtree.insuranceCompanyApp.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mindtree.insuranceCompanyApp.dto.CompanyDto;
+import com.mindtree.insuranceCompanyApp.exception.CompanyServiceException;
+import com.mindtree.insuranceCompanyApp.exception.InsuranceAppException;
+import com.mindtree.insuranceCompanyApp.service.CompanyService;
+
+@RestController
+@RequestMapping("/company")
+@Validated
+public class CompanyController {
+
+	@Autowired
+	private CompanyService companyService;
+
+	@PostMapping("/addCompany")
+	public ResponseEntity<?> addCompany(@Valid @RequestBody CompanyDto cDto, Errors errors)
+			throws Exception {
+		try {
+			CompanyDto c = null;
+			System.out.println(errors);
+			c = companyService.addCompany(cDto);
+			return new ResponseEntity(c, HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			throw new InsuranceAppException(e.getMessage(), e);
+		}
+
+	}
+
+	@RequestMapping("/getAllCompanies")
+	public ResponseEntity<?> getAllCompanies() throws InsuranceAppException {
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.add(HttpHeaders.CACHE_CONTROL, "no-cache");
+			headers.add(HttpHeaders.ACCEPT_LANGUAGE, headers.getAcceptLanguage().toString());
+			headers.add(HttpHeaders.CONNECTION, headers.getConnection().toString());
+			headers.add(HttpHeaders.WARNING, "VALIDATED");
+			List<CompanyDto> cList = companyService.getAllCompanies();
+			return ResponseEntity.ok().headers(headers).body(cList);
+		} catch (CompanyServiceException e) {
+			e.printStackTrace();
+			throw new InsuranceAppException(e.getMessage(), e);
+		}
+	}
+
+	@RequestMapping("/getSortedCompanies")
+	public ResponseEntity<?> getSortedCompanies() throws InsuranceAppException {
+		try {
+			List<CompanyDto> cList = companyService.getSortedCompanies();
+			return new ResponseEntity(cList, HttpStatus.ACCEPTED);
+		} catch (CompanyServiceException e) {
+			e.printStackTrace();
+			throw new InsuranceAppException(e.getMessage(), e);
+		}
+	}
+
+}

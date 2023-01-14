@@ -1,0 +1,17 @@
+package com.mindtree.student.service;
+
+import java.util.List;
+
+import com.mindtree.student.dto.StudentDto;
+import com.mindtree.student.exception.StudentException;
+
+public interface StudentService {
+	
+	public StudentDto addStudent(StudentDto s)throws StudentException;
+	
+	public List<StudentDto> getAllStudents()throws StudentException;
+	
+	public List<StudentDto> getStudentsByName()throws StudentException;
+
+
+}

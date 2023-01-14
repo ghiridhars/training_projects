@@ -1,0 +1,13 @@
+package com.vskreddy652.rest.service;
+
+@org.springframework.stereotype.Service
+public class ServiceImpl implements Service{
+
+	@Override
+	public String returnMessage(String n) {
+		System.out.println(n);
+		return n;
+	}
+	
+
+}

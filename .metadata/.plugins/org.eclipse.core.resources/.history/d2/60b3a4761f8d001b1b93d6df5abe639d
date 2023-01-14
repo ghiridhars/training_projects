@@ -1,0 +1,16 @@
+package com.mindtree.insuranceCompanyApp;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.mindtree.insuranceCompanyApp.service.CompanyService;
+
+@SpringBootTest
+public class InsuranceServiceTest {
+	
+	@Autowired
+	CompanyService companyService;
+	
+	
+
+}

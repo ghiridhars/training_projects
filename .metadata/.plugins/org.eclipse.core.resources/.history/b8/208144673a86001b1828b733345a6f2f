@@ -1,0 +1,17 @@
+package com.mindtree.franchise.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.mindtree.franchise.dto.TeamDto;
+
+@Service
+public interface TeamService {
+	
+	public List<TeamDto> getAllTeams()throws FranchiseServiceException;
+	
+	public PlayerDto addPlayerByTeam(PlayerDto p)throws FranchiseServiceException;
+
+
+}

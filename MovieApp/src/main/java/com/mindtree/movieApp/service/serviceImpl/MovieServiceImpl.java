@@ -1,0 +1,161 @@
+package com.mindtree.movieApp.service.serviceImpl;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
+
+import com.mindtree.movieApp.dto.ActorDto;
+import com.mindtree.movieApp.dto.MovieDto;
+import com.mindtree.movieApp.entity.Actor;
+import com.mindtree.movieApp.entity.Movie;
+import com.mindtree.movieApp.exception.MovieAppServiceException;
+import com.mindtree.movieApp.exception.DaoException.InvalidActorException;
+import com.mindtree.movieApp.exception.DaoException.InvalidMovieException;
+import com.mindtree.movieApp.repository.ActorRepository;
+import com.mindtree.movieApp.repository.MovieRepository;
+import com.mindtree.movieApp.service.MovieService;
+
+@Service
+public class MovieServiceImpl implements MovieService {
+
+	@Autowired
+	MovieRepository movieRepo;
+
+	@Autowired
+	ActorRepository actorRepo;
+
+	ModelMapper mapper = new ModelMapper();
+
+	public MovieDto entityToDto(Movie a) {
+		return mapper.map(a, MovieDto.class);
+	}
+
+	public Movie dtoToEntity(MovieDto aDto) {
+		return mapper.map(aDto, Movie.class);
+	}
+
+	public List<MovieDto> entityToDto(List<Movie> a) {
+		return a.stream().map(x -> entityToDto(x)).collect(Collectors.toList());
+	}
+
+	public List<Movie> dtoToEntity(List<MovieDto> aDto) {
+		return aDto.stream().map(x -> dtoToEntity(x)).collect(Collectors.toList());
+	}
+
+	@Override
+	public MovieDto addMovie(MovieDto mDto) throws MovieAppServiceException {
+		Movie m = null;
+		try {
+
+			String name = mDto.getName();
+
+			m = movieRepo.findByName(name).orElse(null);
+
+			if (m == null) {
+				m = dtoToEntity(mDto);
+				m = movieRepo.save(m);
+			} else
+				throw new InvalidMovieException("Movie Already Present");
+
+		} catch (DataAccessException e) {
+			throw new MovieAppServiceException(e.getMessage(), e);
+		}
+		return entityToDto(m);
+	}
+
+	@Override
+	public List<MovieDto> getAllDetails() throws MovieAppServiceException {
+		List<Movie> mList = null;
+
+		try {
+			mList = movieRepo.findAll();
+			mList.stream().sorted(new Comparator<Movie>() {
+				@Override
+				public int compare(Movie o1, Movie o2) {
+					return o1.getName().compareTo(o2.getName());
+				}
+			});
+		} catch (DataAccessException e) {
+
+			throw new MovieAppServiceException(e.getMessage(), e);
+
+		}
+
+		return entityToDto(mList);
+
+	}
+
+	@Override
+	public List<MovieDto> getFilteredDetails() throws MovieAppServiceException {
+		List<MovieDto> mList = null;
+
+		mList = getAllDetails();
+
+		mList = mList.stream().filter(x -> x.getHighestBudget() > 3500000).collect(Collectors.toList());
+
+		return mList;
+
+	}
+
+	@Override
+	public Optional<Float> getAverageBudget() throws MovieAppServiceException {
+		List<MovieDto> mList = null;
+
+		Optional<Float> averageBudget = null;
+
+		try {
+			mList = getAllDetails();
+
+			List<Float> budget = new ArrayList<>();
+			for (MovieDto m : mList) {
+				budget.add(m.getHighestBudget());
+			}
+
+			averageBudget = budget.stream().reduce((a, b) -> a + b);
+			int nos = budget.size();
+
+			averageBudget = averageBudget.map(x -> x / nos);
+		} catch (MovieAppServiceException e) {
+			throw new MovieAppServiceException(e.getMessage(), e);
+		}
+
+		return averageBudget;
+
+	}
+
+	@Override
+	public List<MovieDto> getMoviesOfActor(String name) throws MovieAppServiceException {
+		List<MovieDto> res = null;
+		List<MovieDto> mList = null;
+		try {
+			mList = getAllDetails();
+			List<Actor> a = actorRepo.findByName(name).orElseThrow(() -> new InvalidActorException("Actor not found"));
+
+			res = mList.stream()
+					.filter((movie) -> {
+				boolean validC = false;
+				List<ActorDto> aList = movie.getActors();
+				for (ActorDto mod : aList) {
+					if (mod.getName().equalsIgnoreCase(name)) {
+						validC = true;
+						System.out.println(aList);
+					}
+				}
+				return validC;
+			}).collect(Collectors.toList());
+
+		} catch (MovieAppServiceException e) {
+			throw new MovieAppServiceException(e.getMessage(), e);
+		}
+		return res;
+
+	}
+
+}

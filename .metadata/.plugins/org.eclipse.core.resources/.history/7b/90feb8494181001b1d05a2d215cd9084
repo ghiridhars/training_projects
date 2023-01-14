@@ -1,0 +1,89 @@
+package com.mindtree.student.controller;
+
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mindtree.student.dto.StudentDto;
+import com.mindtree.student.exception.StudentException;
+import com.mindtree.student.service.StudentService;
+
+@Controller
+@RequestMapping("/student")
+public class StudentController {
+
+	@Autowired
+	StudentService studentService;
+
+	@RequestMapping(method = RequestMethod.GET, value = "/home")
+	public String getHome() {
+		return "home";
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/addStudent")
+	public String addStudent() {
+		return "addStudent";
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/saveStudent")
+	public String saveStudent(@ModelAttribute("student") StudentDto sDto, BindingResult br, Model m) {
+		StudentDto s = null;
+		try {
+			s =studentService.addStudent(sDto);
+			return "redirect:getAllData";
+		} catch (StudentException e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/getAllData")
+	public String getAllStudents(Model m) {
+		Set<String> slist = null;
+		try {
+			slist = studentService.getAllClasses();
+			m.addAttribute("classList", slist);
+			return "getStudent";
+		} catch (StudentException e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/editStudent/{id}")
+	public String editStudent(@PathVariable("id") int id,Model m) {
+		StudentDto s=null;
+		try {
+			s = studentService.getStudentById(id);
+		} catch (StudentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		m.addAttribute("student", s);
+		return "editStudent";
+	}
+
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.GET, value = "/getStudent/{name}")
+	public List<StudentDto> getStudentByClass(@PathVariable String name, Model m) {
+		List<StudentDto> sList = null;
+		try {
+			sList = studentService.getStudentsByName(name);
+		} catch (StudentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		m.addAttribute("classes", )
+		return sList;
+	}
+
+}

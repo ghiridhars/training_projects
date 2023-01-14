@@ -1,0 +1,89 @@
+package com.mindtree.franchise.entity;
+
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+@Table(name = "player")
+public class Player {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+
+	private String name;
+	private String type;
+	private short age;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdDate = new Date();
+
+	@ManyToOne
+	@JsonIgnore
+	private Team team;
+
+	public Player() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Player(int id, String name, String type, short age, Team team) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.age = age;
+		this.team = team;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public short getAge() {
+		return age;
+	}
+
+	public void setAge(short age) {
+		this.age = age;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+
+}

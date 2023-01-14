@@ -1,0 +1,8 @@
+package com.mindtree.franchise.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public interface TeamService {
+
+}

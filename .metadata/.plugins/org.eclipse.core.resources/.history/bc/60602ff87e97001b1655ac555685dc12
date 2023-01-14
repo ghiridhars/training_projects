@@ -1,0 +1,25 @@
+package junitPractise;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import junitPractise.model.Address;
+import junitPractise.model.Employee;
+
+public class EmployeeService {
+
+	private Address add;
+
+	public EmployeeService(Address add) {
+		this.add = add;
+	}
+
+	public Employee getEmployee() {
+		try {
+			return add.getAddress().length();
+		} catch (SQLException e) {
+			return 0;
+		}
+	}
+
+}

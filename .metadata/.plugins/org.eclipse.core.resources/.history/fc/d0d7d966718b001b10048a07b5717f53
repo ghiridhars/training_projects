@@ -1,0 +1,72 @@
+package com.mindtree.insuranceCompanyApp.dto;
+
+import java.io.Serializable;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.mindtree.insuranceCompanyApp.entity.Company;
+
+import lombok.Data;
+
+@Data
+public class PolicyDto implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4050878808842002325L;
+	
+	@NotNull(message = "ID should not be empty")
+	private int id;
+	
+	@NotEmpty(message = "Name should not be empty")
+	@Size(min = 4, message = "Minimum 4 characters")
+	private String name;
+	
+	@NotNull(message = "Amount should not be empty")
+	private float premium;
+
+	public PolicyDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public PolicyDto(int id, String name, float premium, Company company) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.premium = premium;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public float getPremium() {
+		return premium;
+	}
+
+	public void setPremium(float premium) {
+		this.premium = premium;
+	}
+
+	@Override
+	public String toString() {
+		return "PolicyDto [id=" + id + ", name=" + name + ", premium=" + premium + "]";
+	}
+
+}

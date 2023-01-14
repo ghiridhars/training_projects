@@ -1,0 +1,14 @@
+$(document).ready(function(){
+	$("#form").validate({
+		rules:{
+			
+		},
+		messages:{
+			
+		},
+		submitHandler:function(form){
+			
+			
+		}
+	});
+});

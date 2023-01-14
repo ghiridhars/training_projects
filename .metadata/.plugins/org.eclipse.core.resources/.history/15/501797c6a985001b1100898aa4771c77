@@ -1,0 +1,23 @@
+package com.mindtree.CollegeApp.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.mindtree.CollegeApp.dto.StudentDto;
+import com.mindtree.CollegeApp.entity.Student;
+
+@Repository
+public interface StudentRepo extends JpaRepository<Student, Integer>{
+
+	@Query("select count(*) from Student")
+	public int getCountStudent();
+	
+	@Query("select s from Student s where s.collegeId=?1")
+	public List<Student> getStudentsById(int id);
+
+	
+}

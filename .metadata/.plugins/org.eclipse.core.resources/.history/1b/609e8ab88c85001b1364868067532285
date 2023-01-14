@@ -1,0 +1,17 @@
+package com.mindtree.personCountryApp.security;
+
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+public class AppUserDetails implements UserDetails {
+	
+	private String username;
+	private String password;
+	private String role;
+	private List<GrantedAuthority> authorities;
+
+
+}

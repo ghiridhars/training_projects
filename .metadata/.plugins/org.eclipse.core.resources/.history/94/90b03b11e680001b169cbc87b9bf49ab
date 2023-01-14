@@ -1,0 +1,70 @@
+package com.mindtree.student.entity;
+
+import java.util.Date;
+import java.util.Set;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "student")
+public class Student {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+
+	private String name;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdDate = new Date();
+
+	@ElementCollection
+	@CollectionTable(name = "subjects", joinColumns = @JoinColumn(name = "id"))
+	private Set<String> subjects;
+
+	public Student() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Student(int id, String name, Set<String> subjects) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.subjects = subjects;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Set<String> getSubjects() {
+		return subjects;
+	}
+
+	public void setSubjects(Set<String> subjects) {
+		this.subjects = subjects;
+	}
+
+}

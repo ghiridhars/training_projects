@@ -1,0 +1,6 @@
+package junitPractise;
+
+@ExtendWith(MockitoExtension.class)
+public class EmployeeTest2 {
+
+}

@@ -1,0 +1,45 @@
+package junitPractise.model;
+
+public class Address {
+
+	private int pincode;
+	private String streetName;
+	private String cityName;
+
+	public Address(int pincode, String streetName, String cityName) {
+		super();
+		this.pincode = pincode;
+		this.streetName = streetName;
+		this.cityName = cityName;
+	}
+
+	public Address() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(int pincode) {
+		this.pincode = pincode;
+	}
+
+	public String getStreetName() {
+		return streetName;
+	}
+
+	public void setStreetName(String streetName) {
+		this.streetName = streetName;
+	}
+
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+}

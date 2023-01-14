@@ -1,0 +1,15 @@
+@charset "ISO-8859-1";
+label.error{
+	color:red;
+	margin-top:10px;
+}
+
+body{
+	background: radial-gradient(white,darkblue);
+	background-repeat: no-repeat;
+	height:1000px;
+}
+
+.container{
+	background: rgba(255, 255, 255, 0.7);
+}

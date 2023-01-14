@@ -1,0 +1,40 @@
+@charset "ISO-8859-1";
+
+nav {
+	background: linear-gradient(lightblue, white);
+}
+
+div.card:hover {
+	width: 101%;
+	height:101%;
+	background-color: rgba(255, 255, 255, 0.7);
+	padding: initial;
+}
+
+html {
+	height: 100%;
+	margin: auto;
+	overflow: scroll;
+}
+
+@media only screen and (max-width: 600px) {
+	body {
+		background-color: red;
+		
+	}
+}
+
+body {
+	background-size: cover;
+}
+
+.parallax {
+	/* The image used */
+	background: url(../images/college.jpg);
+	min-height: 500px;
+	/* Create the parallax scrolling effect */
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}

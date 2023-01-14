@@ -1,0 +1,16 @@
+package com.example.demo.dto;
+
+import java.util.List;
+
+public class AjaxResponseBody {
+
+	String msg;
+    private List<EmployeeDto> result;
+	public List<EmployeeDto> getResult() {
+		return result;
+	}
+	public void setResult(List<EmployeeDto> result) {
+		this.result = result;
+	}
+	
+}

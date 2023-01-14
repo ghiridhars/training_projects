@@ -1,0 +1,52 @@
+package com.mindtree.webAppDemo2.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mindtree.webAppDemo2.entity.Employee;
+import com.mindtree.webAppDemo2.service.EmployeeService;
+
+@Controller
+@RequestMapping("/Employee")
+public class EmployeeController {
+
+	@Autowired
+	private EmployeeService empService;
+
+	@RequestMapping("/")
+	public String index() {
+		return "home";
+	}
+
+//	@RequestMapping("/")
+//  public String home(Model model) {
+//      model.addAttribute("message", "Helooo");
+//      return "emp";
+//  }
+
+	@PostMapping("/addEmployee")
+	public Employee addEmployee(@RequestBody Employee s) {
+		return empService.addEmployee(s);
+	}
+
+//	@RequestMapping(method = RequestMethod.GET)
+//	public String getAllEmployees(Model m) {
+//		System.out.println("Getting all students");
+//		m.addAllAttributes(empService.getAllEmployees());
+//		return "emp";
+//	}
+}

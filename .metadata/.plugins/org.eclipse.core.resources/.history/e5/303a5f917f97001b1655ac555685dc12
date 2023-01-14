@@ -1,0 +1,41 @@
+package junitPractise;
+
+import static org.mockito.Mockito.when;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import junitPractise.model.Address;
+import junitPractise.model.Employee;
+
+@ExtendWith(MockitoExtension.class)
+public class EmployeeTest2 {
+
+	@Mock
+	Address add;
+
+	@InjectMocks
+	EmployeeService service;
+
+	@Test
+	void testSuccess() {
+		// Setup mock scenario
+		when(add.getStreetName()).thenReturn("A B CDEFGHIJK 12345 1234");
+
+		// Execute the service that uses the mocked repository
+		Employee emp = service.getEmployee();
+
+		// Validate the response
+		Assertions.assertNotNull(emp);
+		Assertions.assertEquals(1212, emp.getAddress().getPincode());
+	}
+
+}

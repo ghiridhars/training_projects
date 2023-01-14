@@ -1,0 +1,127 @@
+package com.mindtree.CollegeApp.service;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.mindtree.CollegeApp.dto.CollegeDto;
+import com.mindtree.CollegeApp.dto.StudentDto;
+import com.mindtree.CollegeApp.entity.College;
+import com.mindtree.CollegeApp.entity.Student;
+import com.mindtree.CollegeApp.exception.CollegeServiceException;
+import com.mindtree.CollegeApp.exception.InvalidCollegeException;
+import com.mindtree.CollegeApp.exception.InvalidStudentException;
+import com.mindtree.CollegeApp.repository.CollegeRepo;
+
+@Service
+public class CollegeServiceImpl {
+
+	@Autowired
+	private CollegeRepo collegeRepo;
+	
+	ModelMapper model = new ModelMapper();
+	
+	public CollegeDto entityToDto(College e) {
+		ModelMapper mapper = new ModelMapper();
+		CollegeDto map = mapper.map(e, CollegeDto.class);
+		return map;
+	}
+	
+	public StudentDto entityToDto(Student e) {
+		ModelMapper mapper = new ModelMapper();
+		StudentDto map = mapper.map(e, StudentDto.class);
+		return map;
+	}
+
+	public List<StudentDto> entityToDTo(Set<Student> li) {
+		return li.stream().map(x -> entityToDto(x)).collect(Collectors.toList());
+	}
+
+	public College dtoToEntity(CollegeDto edto) {
+		College emp = new College();
+		ModelMapper mapper = new ModelMapper();
+		College map = mapper.map(edto, College.class);
+		return map;
+	}
+
+	public List<College> dtoToEntity(List<CollegeDto> dto) {
+		return dto.stream().map(x -> dtoToEntity(x)).collect(Collectors.toList());
+	}
+	
+	public List<College> dtoToEntity(Set<CollegeDto> dto) {
+		return dto.stream().map(x -> dtoToEntity(x)).collect(Collectors.toList());
+	}
+
+	public List<CollegeDto> entityToDto(Set<College> emp) {
+		return emp.stream().map(x -> entityToDto(x)).collect(Collectors.toList());
+	}
+	public List<CollegeDto> entityToDto(List<College> emp) {
+		return emp.stream().map(x -> entityToDto(x)).collect(Collectors.toList());
+	}
+
+	public List<CollegeDto> getAllDetails() throws CollegeServiceException {
+		Set<College> out = null;
+		try {
+			List<College> li = collegeRepo.findAll();
+			out = new HashSet<>(li);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CollegeServiceException(e+"\nService layer Exception when getting all details.");
+		}
+		System.out.println(entityToDto(out));
+		return entityToDto(out);
+	}
+
+	public CollegeDto getCollegeById(int id) throws CollegeServiceException {
+		College result = null;
+		try {
+			result = collegeRepo.findById(id).orElseThrow(() -> new InvalidCollegeException("College ID not found in database"));
+		} catch (InvalidCollegeException e) {
+			e.printStackTrace();
+			throw new CollegeServiceException(e+"\nService layer Exception:when getting college details by id.");
+		}
+		return entityToDto(result);
+	}
+
+	public CollegeDto addCollege(CollegeDto s) throws CollegeServiceException {
+		System.out.println("Added");
+		try {
+			List<College> cList = collegeRepo.findAll();
+			Iterator<College> itr = cList.iterator();
+			while(itr.hasNext()) {
+				College stu= itr.next();
+				if(stu.getCollegeName().equals(s.getCollegeName())) {
+					throw new InvalidCollegeException("College Name already present");			
+				}
+			}
+			collegeRepo.save(dtoToEntity(s));
+		} catch (InvalidCollegeException e) {
+			e.printStackTrace();
+			throw new CollegeServiceException(e.getMessage(),e);
+		}
+		return s;
+	}
+
+	public List<StudentDto> getStudentsById(int id) throws CollegeServiceException {
+		College col=null;
+		try {
+			col = collegeRepo.findById(id).get();
+			Set<Student> li = new HashSet<>();
+			if(col!=null)
+				li = col.getStudents();
+			else
+				throw new InvalidCollegeException("College not found");
+			return entityToDTo(li);
+		} catch (InvalidCollegeException e) {
+			e.printStackTrace();
+			throw new CollegeServiceException(e.getMessage(),e);
+		}
+	}
+
+}

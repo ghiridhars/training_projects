@@ -1,0 +1,11 @@
+package com.mindtree.student.dto;
+
+import java.util.Set;
+
+public class StudentDto {
+
+	private int id;
+	private String name;
+	Set<String> subjects;
+	
+}

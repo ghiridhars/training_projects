@@ -1,0 +1,89 @@
+package com.mindtree.insuranceCompanyApp.service.serviceImpl;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
+
+import com.mindtree.insuranceCompanyApp.dto.PolicyDto;
+import com.mindtree.insuranceCompanyApp.entity.Company;
+import com.mindtree.insuranceCompanyApp.entity.Policy;
+import com.mindtree.insuranceCompanyApp.exception.CompanyServiceException;
+import com.mindtree.insuranceCompanyApp.exception.InvalidCompanyException;
+import com.mindtree.insuranceCompanyApp.exception.InvalidPolicyException;
+import com.mindtree.insuranceCompanyApp.exception.PolicyServiceException;
+import com.mindtree.insuranceCompanyApp.repository.CompanyRepository;
+import com.mindtree.insuranceCompanyApp.repository.PolicyRepository;
+import com.mindtree.insuranceCompanyApp.service.PolicyService;
+
+@Service
+public class PolicyServiceImplementation implements PolicyService {
+
+	@Autowired
+	private CompanyRepository companyRepo;
+
+	@Autowired
+	private PolicyRepository policyRepo;
+
+	private static ModelMapper mapper = new ModelMapper();
+
+	public Policy dtoToEntity(PolicyDto cDto) {
+		return mapper.map(cDto, Policy.class);
+	}
+
+	public PolicyDto entityToDto(Policy c) {
+		return mapper.map(c, PolicyDto.class);
+	}
+
+	public List<Policy> dtoToEntity(List<PolicyDto> cDto) {
+		return cDto.stream().map(x -> dtoToEntity(x)).collect(Collectors.toList());
+	}
+
+	public List<PolicyDto> entityToDto(List<Policy> c) {
+		return c.stream().map(x -> entityToDto(x)).collect(Collectors.toList());
+	}
+
+	@Override
+	@Cacheable(value="policy")
+	public PolicyDto addPolicyByName(PolicyDto pDto, String name) throws PolicyServiceException {
+		Company c = null;
+		Policy p = null;
+		try {
+			c = companyRepo.findByName(name)
+					.orElseThrow(() -> new InvalidCompanyException("Company Name not found"));
+
+			p = policyRepo.save(dtoToEntity(pDto));
+			p.setCompany(c);
+			companyRepo.save(c);
+		} catch (InvalidCompanyException e) {
+			throw new PolicyServiceException(e.getMessage(), e);
+		}
+		return entityToDto(p);
+	}
+
+	@Cacheable(value="cList",key = "#id",unless = "#result.size==4")	
+	@Override
+	public List<PolicyDto> getAllPolicies(int id) throws PolicyServiceException {
+		try {
+			return entityToDto(policyRepo.findAll());
+		} catch (RuntimeException e) {
+			throw new PolicyServiceException(e.getMessage(), e);
+		}
+	}
+
+	@Override
+	public PolicyDto getPolicy(int id) throws PolicyServiceException {
+		Policy c= null;
+		try {
+			c = policyRepo.findById(id).orElseThrow(() -> new InvalidPolicyException("Policy Not Found"));
+		} catch (DataAccessException e) {
+			throw new PolicyServiceException(e.getMessage(),e);
+		} 
+		return entityToDto(c);
+	}
+
+}

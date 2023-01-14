@@ -1,0 +1,17 @@
+$(document).ready(function(){
+	$("#form").validate({
+		rules:{
+			name:{
+				required:true
+			}
+		},
+		messages:{
+			
+		},
+		submitHandler:function(form){
+			form.submit();
+			return true;
+			
+		}
+	});
+});

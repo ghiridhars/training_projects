@@ -1,0 +1,11 @@
+package junitPractise.model;
+
+import java.sql.SQLException;
+
+public class Address {
+	
+	public String getAddress() throws SQLException {
+        return "OneTwoThree";
+    }
+
+}

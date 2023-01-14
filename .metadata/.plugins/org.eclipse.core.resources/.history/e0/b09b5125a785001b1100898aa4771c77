@@ -1,0 +1,10 @@
+@charset "ISO-8859-1";
+body {
+background: linear-gradient(lightblue, white);
+font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+div{
+	color:black;
+}

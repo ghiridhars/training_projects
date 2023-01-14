@@ -1,0 +1,15 @@
+package com.mindtree.franchise.exception;
+
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+	
+	@ExceptionHandler(FranchiseAppException.class)
+	public String handleAppException(FranchiseAppException fe, WebRequest wr) {
+		
+	}
+
+}

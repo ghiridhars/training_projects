@@ -1,0 +1,19 @@
+$(document).ready(function(){
+	$("#studentForm").validate({
+		rules:{
+			name:{
+				required:true
+			}
+		},
+		messages:{
+			name:{
+				required:'Please enter name'
+			}
+		},
+		submitHandler:function(form){
+			form.submit();
+			return true;
+			
+		}
+	});
+});

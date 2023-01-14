@@ -1,0 +1,90 @@
+package com.mindtree.franchise.entity;
+
+import java.util.List;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+public class Player {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int playerId;
+
+	private String playerName;
+
+	@ElementCollection
+	@CollectionTable(name = "playerType", joinColumns = @JoinColumn(referencedColumnName = "playerId"))
+	private List<String> playerType;
+
+	private short age;
+
+	@ManyToOne
+	@JoinColumn(name = "teamId")
+	@JsonIgnore
+	private Team team;
+
+	public Player() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Player(int playerId, String playerName, List<String> playerType, short age, Team team) {
+		super();
+		this.playerId = playerId;
+		this.playerName = playerName;
+		this.playerType = playerType;
+		this.age = age;
+		this.team = team;
+	}
+
+	public short getAge() {
+		return age;
+	}
+
+	public void setAge(short age) {
+		this.age = age;
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+
+	public List<String> getPlayerType() {
+		return playerType;
+	}
+
+	public void setPlayerType(List<String> playerType) {
+		this.playerType = playerType;
+	}
+
+	public int getPlayerId() {
+		return playerId;
+	}
+
+	public void setPlayerId(int playerId) {
+		this.playerId = playerId;
+	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+
+}

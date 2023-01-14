@@ -1,0 +1,29 @@
+@charset "ISO-8859-1";
+
+body {
+	background-size: contain;
+	background: url(../images/population.jpg);
+	min-height: 700px;
+	background-repeat: no-repeat;
+	background-position: top;
+	background-attachment: fixed;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+input[type=radio] {
+	z-index: 3;
+	margin: 0;
+	width: 20px;
+	height: 20px;
+	-moz-appearance: none;
+}
+
+label.form-check-label {
+	font-weight: normal;
+	margin-left: 20px;
+}
+
+.container {
+	background: linear-gradient(rgb(255, 255, 255, 0.8),
+		rgb(255, 255, 255, 0.6));
+}

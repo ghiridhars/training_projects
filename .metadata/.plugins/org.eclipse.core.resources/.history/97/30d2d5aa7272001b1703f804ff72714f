@@ -1,0 +1,88 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>College Management Home</title>
+<link rel="stylesheet" href="/resources/css/homeStyle.css">
+</head>
+<body>
+
+	<div class="container">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="/">
+				<button type="button" class="btn btn-primary ">Home</button>
+			</a>
+			<div class="navbar-header">
+				<h3 class="text-center">College Management</h3>
+			</div>
+		</nav>
+		<div class="mask" style="background-color: rgba(173, 216, 230, 0.5)">
+			<div class="d-flex justify-content-center align-items-center h-100">
+				<div class="text-white">
+					<blockquote class="blockquote text-center">
+						<h2>Welcome to College Management App</h2>
+						<p class="mb-0">Please select one of the options</p>
+					</blockquote>
+
+					<div class="container">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="card text-center">
+									<img class="card-img" src="/resources/images/college.jpg"
+										alt="Card image">
+									<div class="card-img-overlay">
+										<div class="card-body">
+											<h4 class="card-title">Add College Data</h4>
+											<p class="card-text">Click the below option to add the
+												college data and store it into the database.</p>
+
+										</div>
+									</div>
+									<a class="btn btn-primary" href="college/addCollege"
+										role="button">Add College</a>
+									<h4 class="card-title">Get All College Data</h4>
+									<p class="card-text">Click the below option to fetch all
+										the college data from the database.</p>
+									<a class="btn btn-primary" href="college/getAllColleges"
+										role="button">View Colleges</a>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="card text-center">
+									<img class="card-img" src="/resources/images/student.jpg"
+										alt="Card image">
+									<div class="card-img-overlay">
+										<div class="card-body">
+											<h4 class="card-title">Add Student Data</h4>
+											<p class="card-text">Click the below option to add the
+												student data and store it into the database.</p>
+											<a class="btn btn-primary" href="student/addStudent"
+												role="button">Add Student</a>
+										</div>
+										<div class="card-body">
+											<h4 class="card-title">Get Student Data By College</h4>
+											<p class="card-text">Click the below option to fetch all
+												the student data from the database.</p>
+											<a class="btn btn-primary" href="student/getStudents"
+												role="button">View Students</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

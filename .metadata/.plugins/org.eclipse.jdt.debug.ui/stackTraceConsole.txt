@@ -1,0 +1,6 @@
+<select class="form-control" name="collegeId" id="collegeId">
+					<option value=0>----Select---</option>
+					<c:forEach items="${collegeList}" var="college">
+            			<option value="${college.collegeId}">${college.collegeName}</option>
+        			</c:forEach>
+				</select>

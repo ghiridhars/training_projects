@@ -1,0 +1,39 @@
+package com.mindtree.franchise.service.serviceImpl;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.mindtree.franchise.dto.PlayerDto;
+import com.mindtree.franchise.dto.TeamDto;
+import com.mindtree.franchise.entity.Player;
+import com.mindtree.franchise.entity.Team;
+import com.mindtree.franchise.exception.FranchiseServiceException;
+import com.mindtree.franchise.repository.TeamRepository;
+import com.mindtree.franchise.service.TeamService;
+
+public class TeamServiceImpl implements TeamService {
+
+	@Autowired
+	TeamRepository teamRepo;
+
+	ModelMapper mapper = new ModelMapper();
+
+	@Override
+	public List<TeamDto> getAllTeams() throws FranchiseServiceException {
+		List<Team> pList = null;
+		
+		pList = teamRepo.findAll();
+		
+		return pList.stream().map(x -> (mapper.map(x, PlayerDto.class))).collect(Collectors.toList());
+	}
+
+	@Override
+	public TeamDto addTeam(TeamDto p) throws FranchiseServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

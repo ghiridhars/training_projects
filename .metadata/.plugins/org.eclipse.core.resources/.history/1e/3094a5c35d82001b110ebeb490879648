@@ -1,0 +1,57 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+	
+</script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<!-- jQuery library -->
+
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	rel="stylesheet" type="text/css" />
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+	type="text/javascript"></script>
+
+<link rel="stylesheet" href="/resources/css/header.css">
+</head>
+<body>
+
+	<div>
+		<nav class="navbar">
+			<a class="navbar-brand" href="/student/home">Student App</a>
+			<ul>
+				<li><a href="#">Menu 1</a>
+					<div>
+						<div class="row">
+							<div class="col">
+								<a style="font-size: 18px" href="/student/addStudent">Add
+									Student</a>
+							</div>
+							<div class="col">
+								<a href="/student/getAllData" style="font-size: 18px">Get
+									Student Data</a>
+							</div>
+						</div>
+					</div></li>
+				<li><a href="#">Menu 2</a></li>
+			</ul>
+		</nav>
+
+
+	</div>
+
+
+
+</body>
+</html>

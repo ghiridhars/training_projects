@@ -1,0 +1,15 @@
+package com.mindtree.student.exception;
+
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+	
+	@ExceptionHandler(StudentAppException.class)
+	public String handleStudentException(StudentAppException se,WebRequest wr) {
+		return wr.getDescription(false)+" "+se.getMessage();
+	}
+
+}

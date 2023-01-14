@@ -1,0 +1,6 @@
+package com.mindtree.franchise.repository;
+
+
+public interface TeamRepository extends JpaRepository<Team, Integer > {
+
+}
